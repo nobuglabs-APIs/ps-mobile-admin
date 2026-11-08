@@ -1,0 +1,145 @@
+@import "tailwindcss";
+
+@layer base {
+  html {
+    background: #f8fafc;
+  }
+
+  body {
+    min-width: 320px;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  :focus-visible {
+    outline: 3px solid rgb(0 86 214 / 28%);
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  /* Hide scrollbar for clean UI */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .app-surface {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  }
+
+  .modal-backdrop {
+    animation: modal-backdrop-in 160ms ease-out;
+  }
+
+  .modal-panel {
+    animation: modal-panel-in 180ms cubic-bezier(.2, .8, .2, 1);
+  }
+}
+
+@keyframes modal-backdrop-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modal-panel-in {
+  from { opacity: 0; transform: translateY(8px) scale(.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 8mm 12mm;
+  }
+
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* A aplicação contém navegação, ações e listas. Só o documento A4 pode
+     participar na impressão; sem isto o browser imprime a interface por baixo
+     da fatura. */
+  body * {
+    visibility: hidden !important;
+  }
+
+  #printable-invoice,
+  #printable-invoice * {
+    visibility: visible !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  .print-container {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* No ecrã, a folha A4 é reduzida com transform:scale num wrapper. Na
+     impressão é preciso anular essa escala e o dimensionamento do wrapper,
+     senão o documento sai encolhido/recortado. */
+  .pdf-scale-wrap {
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+    transform: none !important;
+  }
+
+  #printable-invoice {
+    width: 100% !important;
+    transform: none !important;
+    transform-origin: initial !important;
+  }
+
+  /* Evita que blocos estruturais (caixas, tabela, assinaturas, rodapé) sejam
+     cortados ao meio quando o documento passa de uma página. */
+  .print-container tr,
+  .print-container .break-inside-avoid,
+  .print-container > div > div > div {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Mantém o cabeçalho da tabela junto aos itens na paginação. */
+  .print-container thead {
+    display: table-header-group;
+  }
+}
+
