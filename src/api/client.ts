@@ -3,7 +3,9 @@ const fallbackBaseUrl = import.meta.env.PROD
   : 'http://localhost:8081/api/v1';
 
 export const apiBaseUrl = (
-  import.meta.env.VITE_PS_MOBILE_API_BASE_URL || fallbackBaseUrl
+  import.meta.env.PROD
+    ? '/api/v1'
+    : import.meta.env.VITE_PS_MOBILE_API_BASE_URL || fallbackBaseUrl
 ).replace(/\/+$/, '');
 
 const ACCESS_TOKEN_KEY = 'ps_mobile_admin_access_token';
